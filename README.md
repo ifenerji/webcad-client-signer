@@ -16,4 +16,4 @@ An installer around launcher wrapper of EgaClientSigner.jar with bundled JRE and
 - Click build button.
 - Run Inno Setup.
 - Click build button.
-- Setup will be constructed as WebcadClientSigner-setup.exe.
+- Setup will be constructed as `WebcadClientSigner-setup.exe.`
