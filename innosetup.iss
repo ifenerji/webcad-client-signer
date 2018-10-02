@@ -35,6 +35,14 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
+[InstallDelete]
+Name: "{%USERPROFILE}\EgaClientSigner"; Type: filesandordirs
+Name: "{userstartup}\EGAClientSigner.bat"; Type: files
+Name: "{commonstartup}\EGAClientSigner.bat"; Type: files
+Name: "{userdesktop}\EgaClientSigner.lnk"; Type: files
+Name: "{commondesktop}\EgaClientSigner.lnk"; Type: files
+
+
 [Files]
 Source: "ega\*"; DestDir: "{app}\ega"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
