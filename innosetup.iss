@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0"
 #define MyAppPublisher "Webcad"
 #define MyAppURL "https://webcad.com.tr"
-#define MyAppExeName "webcadsigner.exe"
+#define MyAppFilePath "ega/EgaClientSigner.jar"
 #define MyAppIcoName "ega.ico"
 
 [Setup]
@@ -36,17 +36,16 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [Files]
-Source: "out\webcadsigner.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "out\EgaClientSigner_lib\*"; DestDir: "{app}\EgaClientSigner_lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "out\jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "out\EcsSettings.properties"; DestDir: "{app}"; Flags: ignoreversion
+Source: "ega\*"; DestDir: "{app}\ega"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\EgaClientSigner_lib\{#MyAppIcoName}"
-Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}";
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; IconFilename: "{app}\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{app}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; 
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; Tasks: desktopicon; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 

@@ -1,6 +1,5 @@
-out/jre/*
-out/EgaClientSigner_lib/*
-out/EcsSettings.properties
-*.jar
+jre/*
+ega/*
 *.exe
 .DS_Store
+*.log
