@@ -1,4 +1,5 @@
-jre/*
+jre32/*
+jre64/*
 ega/*
 *.exe
 .DS_Store

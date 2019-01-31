@@ -20,11 +20,11 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={pf64}\{#MyAppName}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=WebcadClientSigner-setup
+OutputBaseFilename=WebcadClientSigner-setup-x64
 Compression=lzma
 SolidCompression=yes
 
@@ -45,7 +45,7 @@ Name: "{commondesktop}\EgaClientSigner.lnk"; Type: files
 
 [Files]
 Source: "ega\*"; DestDir: "{app}\ega"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "jre64\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
