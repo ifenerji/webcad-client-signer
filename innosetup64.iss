@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Webcad Client Signer"
-#define MyAppVersion "2.2"
+#define MyAppVersion "2.3"
 #define MyAppPublisher "Webcad"
 #define MyAppURL "https://webcad.com.tr"
 #define MyAppFilePath "ega/EgaClientSigner.jar"
@@ -20,13 +20,22 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf64}\{#MyAppName}
+DefaultDirName={usercf}\{#MyAppName}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=.
 OutputBaseFilename=WebcadClientSigner-setup-x64
 Compression=lzma
 SolidCompression=yes
+PrivilegesRequired=lowest
+
+[UninstallRun]
+Filename: "{cmd}"; Parameters: "/C taskkill /im javaw.exe /f /t"
+
+[Run]
+Filename: "{cmd}"; Parameters: "/C taskkill /im javaw.exe /f /t"; Flags: postinstall
+Filename: "{commonpf64}\{#MyAppName}\unins000.exe"; Flags: skipifdoesntexist runasoriginaluser waituntilterminated postinstall
+Filename: "{commonpf32}\{#MyAppName}\unins000.exe"; Flags: skipifdoesntexist runasoriginaluser waituntilterminated postinstall
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -39,7 +48,7 @@ Filename: "{cmd}"; Parameters: "/C taskkill /im javaw.exe /f /t"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [InstallDelete]
-Name: "{%USERPROFILE}\EgaClientSigner"; Type: filesandordirs
+Name: "{%USERPROFILE}\EgaClientSigner\NewVersion"; Type: filesandordirs
 Name: "{userstartup}\EGAClientSigner.bat"; Type: files
 Name: "{commonstartup}\EGAClientSigner.bat"; Type: files
 Name: "{userdesktop}\EgaClientSigner.lnk"; Type: files
@@ -49,14 +58,49 @@ Name: "{commondesktop}\EgaClientSigner.lnk"; Type: files
 [Files]
 Source: "ega\*"; DestDir: "{app}\ega"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "jre64\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "ega\EcsSettings.properties"; DestDir: "{%USERPROFILE}\EgaClientSigner\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
+[Dirs]
+Name: "{%USERPROFILE}\EgaClientSigner\NewVersion"; Flags: uninsneveruninstall
+Name: "{%USERPROFILE}\EgaClientSigner\NewVersion\EgaClientSigner_lib"; Flags: uninsneveruninstall
+Name: "{%USERPROFILE}\EgaClientSigner\Backup"; Flags: uninsneveruninstall
+
 [Icons]
-Name: "{app}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
-Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; 
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; Tasks: desktopicon; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{app}\{#MyAppName}"; Filename: "{app}\run.bat"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\run.bat"; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
+Name: "{userstartup}\{#MyAppName}"; Filename: "{app}\run.bat"; 
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\run.bat"; Tasks: desktopicon; IconFilename: "{app}\ega\EgaClientSigner_lib\{#MyAppIcoName}"
 
 [Run]
-Filename: "{app}\jre\bin\javaw.exe"; Parameters: "-cp ""{app}\ega\EGAClientSigner.jar;{app}\ega\EgaClientSigner_lib\*"" ecscommon.OpenApplet"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\run.bat"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+function CreateBatch(): boolean;
+var
+  fileName : string;
+  appPath : string;
+  lines : TArrayOfString;
+begin
+  Result := true;
+  appPath := ExpandConstant('{app}')
+  fileName := appPath + '\run.bat';
+  SetArrayLength(lines, 6);
+  lines[0] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" (copy /Y "' + appPath + '\ega\EGAClientSigner.jar" "%userprofile%\EgaClientSigner\Backup\EGAClientSigner.jar_20200507"';
+  lines[1] := ' copy /Y "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" "' + appPath + '\ega\"';
+  lines[2] := ' del "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar")';
+  lines[3] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" (copy /Y "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" "' + appPath + '\ega\EGAClientSigner_lib\"';
+  lines[4] := ' del "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar")';
+  lines[5] := 'start "WebcadClientSigner" "' + appPath + '\jre\bin\javaw.exe" -cp "' + appPath + '\ega\EGAClientSigner.jar";"' + appPath + '\ega\EgaClientSigner_lib/*";. ecscommon.OpenApplet';
+  Result := SaveStringsToFile(filename,lines,false);
+  exit;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if  CurStep=ssPostInstall then
+    begin
+         CreateBatch();
+    end
+end;
 
