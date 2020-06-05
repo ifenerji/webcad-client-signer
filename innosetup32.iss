@@ -32,6 +32,9 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 
+[UninstallRun]
+Filename: "{cmd}"; Parameters: "/C taskkill /im javaw.exe /f /t"
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
