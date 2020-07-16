@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Webcad Client Signer"
-#define MyAppVersion "3.0.1"
+#define MyAppVersion "3.0.2"
 #define MyAppPublisher "Webcad"
 #define MyAppURL "https://webcad.com.tr"
 #define MyAppFilePath "ega/EgaClientSigner.jar"
@@ -88,7 +88,7 @@ begin
   lines[5] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" (copy /Y "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" "' + appPath + '\ega\EGAClientSigner_lib\"';
   lines[6] := ' del "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar")';
   lines[7] := 'start "WebcadClientSigner" "' + appPath + '\jre\bin\javaw.exe" -cp "' + appPath + '\ega\EGAClientSigner.jar";"' + appPath + '\ega\EgaClientSigner_lib/*";. ecscommon.OpenApplet';
-  Result := SaveStringsToFile(filename,lines,false);
+  Result := SaveStringsToUTF8File(filename,lines,false);
   exit;
 end;
 
