@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Webcad Client Signer"
-#define MyAppVersion "3.0.3"
+#define MyAppVersion "3.0.4"
 #define MyAppPublisher "Webcad"
 #define MyAppURL "https://webcad.com.tr"
 #define MyAppFilePath "ega/EgaClientSigner.jar"
@@ -28,7 +28,8 @@ OutputBaseFilename=WebcadClientSigner-setup-x64
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
-VersionInfoVersion=3.0.3
+VersionInfoVersion=3.0.4
+MinVersion=6.0
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
