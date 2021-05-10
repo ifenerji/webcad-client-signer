@@ -77,19 +77,20 @@ var
   fileName : string;
   appPath : string;
   lines : TArrayOfString;
+  userhome: string;
 begin
   Result := true;
-  appPath := ExpandConstant('{app}')
+  userHome := ExpandConstant('{%USERPROFILE}');
+  appPath := ExpandConstant('{app}');
   fileName := appPath + '\run.bat';
-  SetArrayLength(lines, 8);
-  lines[0] := '@echo off'
-  lines[1] := 'chcp 65001'
-  lines[2] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" (copy /Y "' + appPath + '\ega\EGAClientSigner.jar" "%userprofile%\EgaClientSigner\Backup\EGAClientSigner.jar_20200507"';
-  lines[3] := ' copy /Y "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" "' + appPath + '\ega\"';
-  lines[4] := ' del "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar")';
-  lines[5] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" (copy /Y "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" "' + appPath + '\ega\EGAClientSigner_lib\"';
-  lines[6] := ' del "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar")';
-  lines[7] := 'start "WebcadClientSigner" "' + appPath + '\jre\bin\javaw.exe" -cp "' + appPath + '\ega\EGAClientSigner.jar";"' + appPath + '\ega\EgaClientSigner_lib/*";. ecscommon.OpenApplet';
+  StringChange(appPath, userHome, '%userprofile%');
+  SetArrayLength(lines, 6);
+  lines[0] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" (copy /Y "' + appPath + '\ega\EGAClientSigner.jar" "%userprofile%\EgaClientSigner\Backup\EGAClientSigner.jar_20200507"';
+  lines[1] := ' copy /Y "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar" "' + appPath + '\ega\"';
+  lines[2] := ' del "%userprofile%\EgaClientSigner\NewVersion\EGAClientSigner.jar")';
+  lines[3] := 'if exist "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" (copy /Y "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar" "' + appPath + '\ega\EGAClientSigner_lib\"';
+  lines[4] := ' del "%userprofile%\EgaClientSigner\NewVersion\EgaClientSigner_lib\*.jar")';
+  lines[5] := 'start "WebcadClientSigner" "' + appPath + '\jre\bin\javaw.exe" -cp "' + appPath + '\ega\EGAClientSigner.jar";"' + appPath + '\ega\EgaClientSigner_lib/*";. ecscommon.OpenApplet';
   Result := SaveStringsToUTF8File(filename,lines,false);
   exit;
 end;
